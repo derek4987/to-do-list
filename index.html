@@ -5,6 +5,32 @@
     <title>To Do List</title>
   </head>
   <body>
+    <div id="pageContent">
+      <header><div>To-Do List</div></header>
+      <div id="sideBar">
+        content
+      </div>
+    </div>
+
     <script src="bundle.js"></script>
+    <style>
+      header {
+        font-size: 2rem;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        color: skyblue;
+        background-color: rgb(49, 0, 128);
+      }
+
+      #sideBar {
+        width: 450px;
+      }
+
+      #pageContent {
+        grid-template-columns: 450px auto;
+      }
+
+    </style>
   </body>
 </html>
