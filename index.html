@@ -6,31 +6,24 @@
   </head>
   <body>
     <div id="pageContent">
-      <header><div>To-Do List</div></header>
+      <div class="header"><div>To-Do List</div></div>
       <div id="sideBar">
-        content
+        <div class="sidebarTitle">Lists</div>
+        <div class="sidebarLists">
+          <ul>
+            <li>yolo</li>
+            <li>whats</li>
+          </ul>
+        </div>
+      </div>
+      <div id="listContentSection">
+        <span>hello</span>
       </div>
     </div>
 
     <script src="bundle.js"></script>
     <style>
-      header {
-        font-size: 2rem;
-        width: 100vw;
-        display: flex;
-        justify-content: center;
-        color: skyblue;
-        background-color: rgb(49, 0, 128);
-      }
-
-      #sideBar {
-        width: 450px;
-      }
-
-      #pageContent {
-        grid-template-columns: 450px auto;
-      }
-
+      
     </style>
   </body>
 </html>
