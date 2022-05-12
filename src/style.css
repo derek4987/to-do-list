@@ -114,3 +114,60 @@ button {
 .list-tasks {
   margin: 20px 50px 50px 50px;
 }
+
+/* modals */
+/* add list modal */
+#addListModal {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%,-50%);
+  border: 2px solid black;
+  border-radius: 8px;
+  width: 400px;
+  background-color: rgb(69, 69, 172);
+  color: white;
+}
+
+#addListModal > div {
+  padding: 15px 30px 15px 30px;
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.alm-content {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  gap: 10px;
+}
+
+.alm-content > input {
+  height: 30px;
+  font-size: 1.1rem;
+  border: 1px solid black;
+  border-radius: 6px;
+}
+
+#alm-buttons {
+  display: flex;
+  margin-top: 15px;
+  justify-content: center;
+  gap: 50px;
+}
+
+.alm-button {
+  font-size: 1.1rem;
+  width: 100px;
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 7px;
+}
+
+.alm-button:hover {
+  background-color: rgb(173, 173, 236);
+}
