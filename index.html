@@ -26,10 +26,41 @@
         </div>
       </div>
     </div>
+    <div id="addListModal">
+      <div>
+        <div class="modal-title">
+          New List
+        </div>
+        <div class="alm-content">
+          <label for="listName">List Name:</label>
+          <input type="text" id="listName">
+        </div>
+        <div id="alm-buttons">
+          <button class="alm-submit alm-button">Submit</button>
+          <button class="alm-cancel alm-button">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div id="addTaskModal">
+      <div>
+        <div class="modal-title">
+          Add Task
+        </div>
+      </div>
+    </div>
 
     <script src="bundle.js"></script>
     <style>
-      
+      #addTaskModal {
+        /* display: none; */
+        position: absolute;
+        left: 50%;
+        top: 20%;
+        transform: translate(-50%,-50%);
+        border: 2px solid black;
+        border-radius: 8px;
+        width: 400px;
+      }
     </style>
   </body>
 </html>
