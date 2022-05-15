@@ -10,7 +10,7 @@
       <div id="sideBar">
         <div class="sidebarTitle">
           <span>Lists</span>
-          <button class="add-buttons">Add List</button></div>
+          <button class="add-buttons" id="addListButton">Add List</button></div>
         <div class="sidebarLists">
           <ul>
             <li><button class="li-button">yolo</button></li>
@@ -19,14 +19,14 @@
         </div>
       </div>
       <div id="listContentSection">
-        <button class="add-buttons task-button">Add Task</button>
+        <button class="add-buttons task-button" id="addTaskButton">Add Task</button>
         <div class="list-tasks">
           <span>hello</span>
         
         </div>
       </div>
     </div>
-    <div id="addListModal" class="modal-display">
+    <div id="addListModal" class="modal-display modal-close">
       <div>
         <div class="modal-title">
           New List
@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-    <div id="addTaskModal" class="modal-display">
+    <div id="addTaskModal" class="modal-display modal-close">
       <div>
         <div class="modal-title">
           Add Task
