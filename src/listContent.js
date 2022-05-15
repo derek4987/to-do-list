@@ -12,6 +12,24 @@ const addList = () => {
     // close modal when cancel button is clicked
     modalOpenOrClose('.alm-cancel','#addListModal','close');
 
+    document.addEventListener('click', function(e) {
+
+        if (e.target.matches('#addListButton')) {
+            // open modal when 'add list' button is clicked
+            modalOpenOrClose('#addListModal','open');
+        }
+
+        if (e.target.matches('.alm-cancel')) {
+            // close modal when cancel button is clicked
+            modalOpenOrClose('#addListModal','close');
+        }
+
+        if (e.target.matches('.alm-submit')) {
+            submitNewList();
+            modalOpenOrClose('#addListModal','close');
+        }
+
+    }, false);
 }
 
 
@@ -25,10 +43,20 @@ const addTask = () => {
         this.notes = notes;
     }
 
-    // open modal when 'add task' button is clicked
-    modalOpenOrClose('#addTaskButton','#addTaskModal','open');
-    // close modal when cancel button is clicked
-    modalOpenOrClose('.atm-cancel','#addTaskModal','close');
+    document.addEventListener('click', function(e) {
+
+        if (e.target.matches('#addTaskButton')) {
+            // open modal when 'add task' button is clicked
+            modalOpenOrClose('#addTaskModal','open');
+        }
+
+        if (e.target.matches('.atm-cancel')) {
+            // close modal when cancel button is clicked
+            modalOpenOrClose('#addTaskModal','close');
+        }
+
+    }, false);
+
 }
 
 // DOM logic
@@ -37,18 +65,30 @@ export { addList };
 export { addTask };
 
 
-function modalOpenOrClose(buttonID, modalID, openOrClose) {
-    const button = document.querySelector(`${buttonID}`);
+function modalOpenOrClose(modalID, openOrClose) {
     const modal = document.querySelector(`${modalID}`);
     if (openOrClose === 'open') {
-        button.addEventListener('click', (e) => {
-            modal.classList.add('modal-open');
-            modal.classList.remove('modal-close');
-        });
+        modal.classList.add('modal-open');
+        modal.classList.remove('modal-close');
     } else if (openOrClose === 'close') {
-        button.addEventListener('click', (e) => {
-            modal.classList.remove('modal-open');
-            modal.classList.add('modal-close');
-        });
+        modal.classList.remove('modal-open');
+        modal.classList.add('modal-close');
     } else return;
+};
+
+function submitNewList() {
+    const listValue = document.querySelector('#listName');
+    const listSection = document.querySelector('#sbListsSection');
+
+    if (listValue.value === '') {
+        return 
+    } else {
+        const element = document.createElement('li');
+        const button = document.createElement('button');
+        button.classList.add('li-button');
+        button.textContent = listValue.value;
+        element.appendChild(button);
+        listSection.appendChild(element);
+        listValue.value = ''; 
+    }   
 };
