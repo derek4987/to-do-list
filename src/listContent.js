@@ -2,10 +2,6 @@
 
 // addList module
 const addList = () => {
-    // create list name factory
-    function newList(listName) {
-        this.listName = listName
-    }
     
     // open modal when 'add list' button is clicked
     modalOpenOrClose('#addListButton','#addListModal','open');
@@ -17,19 +13,22 @@ const addList = () => {
         if (e.target.matches('#addListButton')) {
             // open modal when 'add list' button is clicked
             modalOpenOrClose('#addListModal','open');
+            disableBackground('on');
         }
 
         if (e.target.matches('.alm-cancel')) {
             // close modal when cancel button is clicked
             modalOpenOrClose('#addListModal','close');
+            disableBackground('off');
         }
 
         if (e.target.matches('.alm-submit')) {
             submitNewList();
-            modalOpenOrClose('#addListModal','close');
+            disableBackground('off');
         }
 
     }, false);
+
 }
 
 
@@ -48,22 +47,24 @@ const addTask = () => {
         if (e.target.matches('#addTaskButton')) {
             // open modal when 'add task' button is clicked
             modalOpenOrClose('#addTaskModal','open');
+            disableBackground('on');
         }
 
         if (e.target.matches('.atm-cancel')) {
             // close modal when cancel button is clicked
             modalOpenOrClose('#addTaskModal','close');
+            disableBackground('off');
         }
 
     }, false);
 
 }
 
-// DOM logic
-
 export { addList };
 export { addTask };
 
+
+// DOM logic functions
 
 function modalOpenOrClose(modalID, openOrClose) {
     const modal = document.querySelector(`${modalID}`);
@@ -75,6 +76,17 @@ function modalOpenOrClose(modalID, openOrClose) {
         modal.classList.add('modal-close');
     } else return;
 };
+
+function disableBackground(onOrOff) {
+    const background = document.querySelector('.disableBackground');
+    if (onOrOff === 'on') {
+        background.classList.add('modal-open');
+        background.classList.remove('modal-close');
+    } else if (onOrOff === 'off') {
+        background.classList.remove('modal-open');
+        background.classList.add('modal-close');
+    } else return;
+}
 
 function submitNewList() {
     const listValue = document.querySelector('#listName');
@@ -90,5 +102,10 @@ function submitNewList() {
         element.appendChild(button);
         listSection.appendChild(element);
         listValue.value = ''; 
+        modalOpenOrClose('#addListModal','close');
     }   
 };
+
+function submitNewTask() {
+
+}
