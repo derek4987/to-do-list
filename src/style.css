@@ -130,12 +130,15 @@ button {
   z-index: 5;
 }
 
-#addListModal {
+.modal-open {
+  display: block;
+}
+
+.modal-close {
   display: none;
 }
 
 #addTaskModal {
-  display: none;
   top: 40%;
 }
 
