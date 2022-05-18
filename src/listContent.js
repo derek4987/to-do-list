@@ -34,13 +34,6 @@ const addList = () => {
 
 // addTask module
 const addTask = () => {
-    // create task info factory
-    function newTask(title, description, dueDate, notes) {
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.notes = notes;
-    }
 
     document.addEventListener('click', function(e) {
 
@@ -53,6 +46,11 @@ const addTask = () => {
         if (e.target.matches('.atm-cancel')) {
             // close modal when cancel button is clicked
             modalOpenOrClose('#addTaskModal','close');
+            disableBackground('off');
+        }
+
+        if (e.target.matches('.atm-submit')) {
+            submitNewTask();
             disableBackground('off');
         }
 
@@ -106,6 +104,25 @@ function submitNewList() {
     }   
 };
 
-function submitNewTask() {
+// create task info factory
+function newTask(title, description, dueDate, notes) {
+    this.title = title;
+    this.description = description;
+    this.dueDate = dueDate;
+    this.notes = notes;
+}
 
+function submitNewTask() {
+    const taskTitle = document.querySelector('#atm-title');
+    const taskDescription = document.querySelector('#atm-descriptionText');
+    const taskDueDate = document.querySelector('#atm-dueDate');
+    const taskNotes = document.querySelector('#atm-notes');
+    const task = new newTask(taskTitle.value, taskDescription.value, taskDueDate.value, taskNotes.value);
+
+    const taskArea = document.querySelector('.list-tasks');
+    const element = document.createElement('div');
+    element.textContent = task.description;
+    taskArea.append(element);
+
+    modalOpenOrClose('#addTaskModal','close');
 }
