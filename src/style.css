@@ -113,6 +113,9 @@ button {
 
 .list-tasks {
   margin: 20px 50px 50px 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 320px);
+  gap: 30px;
 }
 
 /* modals */
@@ -163,6 +166,10 @@ button {
   font-size: 1.1rem;
   border: 1px solid black;
   border-radius: 6px;
+  padding-left: 5px;
+}
+
+#atm-descriptionText, #atm-notes {
   padding-left: 5px;
 }
 

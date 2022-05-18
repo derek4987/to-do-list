@@ -104,7 +104,7 @@ function submitNewList() {
     }   
 };
 
-// create task info factory
+// create task info constructor
 function newTask(title, description, dueDate, notes) {
     this.title = title;
     this.description = description;
@@ -113,16 +113,20 @@ function newTask(title, description, dueDate, notes) {
 }
 
 function submitNewTask() {
+    // create constructor
     const taskTitle = document.querySelector('#atm-title');
     const taskDescription = document.querySelector('#atm-descriptionText');
     const taskDueDate = document.querySelector('#atm-dueDate');
     const taskNotes = document.querySelector('#atm-notes');
     const task = new newTask(taskTitle.value, taskDescription.value, taskDueDate.value, taskNotes.value);
 
+    // create and append html card
     const taskArea = document.querySelector('.list-tasks');
     const element = document.createElement('div');
-    element.textContent = task.description;
+    element.textContent = `${task.title}${task.description}${task.dueDate}${task.notes}`;
     taskArea.append(element);
 
+    // clear add task modal
+    taskTitle.value = taskDescription.value = taskDueDate.value = taskNotes.value = '';
     modalOpenOrClose('#addTaskModal','close');
 }
