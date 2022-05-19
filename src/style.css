@@ -2,6 +2,10 @@
   min-height: 100vh;
 }
 
+html {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -104,6 +108,18 @@ button {
   flex-direction: column;
 }
 
+#listSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 30px;
+  margin-top: 10px;
+}
+
+.listSectionTitle {
+  font-size: 1.5rem;
+}
+
 .task-button {
   margin-top: 20px;
   height: 31px;
@@ -116,6 +132,31 @@ button {
   display: grid;
   grid-template-columns: repeat(auto-fit, 320px);
   gap: 30px;
+}
+
+/* cards (goes in list-card section) */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 1.2rem;
+}
+
+.card-sectionLabel {
+  font-weight: 600;
+}
+
+.card-deleteOrEdit {
+  display: flex;
+  gap: 20px;
+}
+
+.card-button {
+  width: 18px;
+}
+
+.card-edit, .card-delete {
+  border: none;
 }
 
 /* modals */

@@ -105,11 +105,12 @@ function submitNewList() {
 };
 
 // create task info constructor
-function newTask(title, description, dueDate, notes) {
+function newTask(title, description, dueDate, notes, isComplete) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.notes = notes;
+    this.isComplete = isComplete
 }
 
 function submitNewTask() {
@@ -118,12 +119,12 @@ function submitNewTask() {
     const taskDescription = document.querySelector('#atm-descriptionText');
     const taskDueDate = document.querySelector('#atm-dueDate');
     const taskNotes = document.querySelector('#atm-notes');
-    const task = new newTask(taskTitle.value, taskDescription.value, taskDueDate.value, taskNotes.value);
+    const task = new newTask(taskTitle.value, taskDescription.value, taskDueDate.value, taskNotes.value, 'no');
 
     // create and append html card
     const taskArea = document.querySelector('.list-tasks');
     const element = document.createElement('div');
-    element.textContent = `${task.title}${task.description}${task.dueDate}${task.notes}`;
+    element.textContent = `${task.title}${task.description}${task.dueDate}${task.notes}${task.isComplete}`;
     taskArea.append(element);
 
     // clear add task modal
