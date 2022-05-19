@@ -4,13 +4,10 @@ import deleteIcon from './assets/svgs/deleteIcon.svg';
 import editIcon from './assets/svgs/editIcon.svg'; 
 
 
-// addList module
+let taskArray = [];
+
+// addList function
 const addList = () => {
-    
-    // open modal when 'add list' button is clicked
-    modalOpenOrClose('#addListButton','#addListModal','open');
-    // close modal when cancel button is clicked
-    modalOpenOrClose('.alm-cancel','#addListModal','close');
 
     document.addEventListener('click', function(e) {
 
@@ -36,7 +33,7 @@ const addList = () => {
 }
 
 
-// addTask module
+// addTask function
 const addTask = () => {
 
     document.addEventListener('click', function(e) {
@@ -124,6 +121,9 @@ function submitNewTask() {
     const taskDueDate = document.querySelector('#atm-dueDate');
     const taskNotes = document.querySelector('#atm-notes');
     const task = new newTask(taskTitle.value, taskDescription.value, taskDueDate.value, taskNotes.value, 'no');
+
+    taskArray.push(task);
+    console.log(taskArray);
 
     // create and append html card elements
     const taskArea = document.querySelector('.list-tasks');
