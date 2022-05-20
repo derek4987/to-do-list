@@ -32,7 +32,6 @@ const addList = () => {
 
 }
 
-
 // addTask function
 const addTask = () => {
 
@@ -59,8 +58,26 @@ const addTask = () => {
 
 }
 
+// select list function
+const selectList = () => {
+
+    document.addEventListener('click', function(e) {
+
+        if (e.target.matches('.li-button')) {
+            const listName = e.target.textContent;
+            const listSectionTitle = document.querySelector('.listSectionTitle');
+            listSectionTitle.textContent = listName;
+            document.querySelector('.list-tasks').innerHTML = '';
+            loadList();
+        }
+
+    }, false);
+
+}
+
 export { addList };
 export { addTask };
+export { selectList };
 
 
 // DOM logic functions
@@ -106,7 +123,8 @@ function submitNewList() {
 };
 
 // create task info constructor
-function newTask(title, description, dueDate, notes, isComplete) {
+function newTask(list, title, description, dueDate, notes, isComplete) {
+    this.list = list;
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -116,30 +134,63 @@ function newTask(title, description, dueDate, notes, isComplete) {
 
 function submitNewTask() {
     // create constructor
+    const listName = document.querySelector('.listSectionTitle');
     const taskTitle = document.querySelector('#atm-title');
     const taskDescription = document.querySelector('#atm-descriptionText');
     const taskDueDate = document.querySelector('#atm-dueDate');
     const taskNotes = document.querySelector('#atm-notes');
-    const task = new newTask(taskTitle.value, taskDescription.value, taskDueDate.value, taskNotes.value, 'no');
+    const task = new newTask(listName.textContent, taskTitle.value, taskDescription.value, taskDueDate.value, taskNotes.value, 'no');
 
     taskArray.push(task);
     console.log(taskArray);
 
     // create and append html card elements
+    createCard(task.title,task.description,task.dueDate,task.notes);
+
+    // clear add task modal
+    taskTitle.value = taskDescription.value = taskDueDate.value = taskNotes.value = '';
+    modalOpenOrClose('#addTaskModal','close');
+}
+
+function loadList() {
+    // let selectedListTasks = [];
+    const listSectionTitle = document.querySelector('.listSectionTitle').textContent;
+    for (let i=0; i < taskArray.length; i++) {
+        const arrayItem = taskArray[i];
+        if (arrayItem.list === listSectionTitle) {
+            // selectedListTasks.push(arrayItem);
+            createCard(arrayItem.title, arrayItem.description, arrayItem.dueDate, arrayItem.notes);
+        } else continue;
+    }
+    // console.log(selectedListTasks);
+}
+
+function newDiv(classname, idname) {
+    const element = document.createElement('div');
+    if (classname !== '') {
+        element.classList.add(`${classname}`);    
+    }
+    if (idname !== '') {
+        element.setAttribute('id',`${idname}`);    
+    }
+    return element;
+}
+
+function createCard(title, description, dueDate, notes) {
     const taskArea = document.querySelector('.list-tasks');
     const card = newDiv('card','');
     const cardContent = newDiv('card-content','');
 
     const cardTaskTitle = newDiv('card-title','');
     cardTaskTitle.classList.add('card-sectionLabel');
-    cardTaskTitle.textContent = task.title;
+    cardTaskTitle.textContent = title;
 
     const cardTaskDescription = newDiv('card-description','');
     const descriptionSpan = document.createElement('span');
     descriptionSpan.classList.add('card-sectionLabel');
     descriptionSpan.textContent = 'Description: ';
     const descriptionText = document.createElement('span');
-    descriptionText.textContent = task.description
+    descriptionText.textContent = description;
     cardTaskDescription.append(descriptionSpan, descriptionText);
 
     const cardTaskDueDate = newDiv('card-dueDate','');
@@ -147,7 +198,7 @@ function submitNewTask() {
     dueDateSpan.classList.add('card-sectionLabel');
     dueDateSpan.textContent = 'Due Date: ';
     const dueDateText = document.createElement('span');
-    dueDateText.textContent = task.dueDate;
+    dueDateText.textContent = dueDate;
     cardTaskDueDate.append(dueDateSpan,dueDateText);
 
     const cardTaskNotes = newDiv('card-notes','');
@@ -155,7 +206,7 @@ function submitNewTask() {
     notesSpan.classList.add('card-sectionLabel');
     notesSpan.textContent = 'Notes: ';
     const notesText = document.createElement('span');
-    notesText.textContent = task.notes;
+    notesText.textContent = notes;
     cardTaskNotes.append(notesSpan,notesText);
 
     const cardTaskCheckbox = newDiv('checkbox','');
@@ -186,19 +237,4 @@ function submitNewTask() {
     card.appendChild(cardContent);
 
     taskArea.append(card);
-
-    // clear add task modal
-    taskTitle.value = taskDescription.value = taskDueDate.value = taskNotes.value = '';
-    modalOpenOrClose('#addTaskModal','close');
-}
-
-function newDiv(classname, idname) {
-    const element = document.createElement('div');
-    if (classname !== '') {
-        element.classList.add(`${classname}`);    
-    }
-    if (idname !== '') {
-        element.setAttribute('id',`${idname}`);    
-    }
-    return element;
 }
