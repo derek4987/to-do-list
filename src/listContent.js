@@ -75,9 +75,29 @@ const selectList = () => {
 
 }
 
+// task card buttons function
+const selectCardButtons = () => {
+
+    document.addEventListener('click', function(e) {
+
+        if (e.target.matches('.card-delete') || e.target.matches('.card-delete-icon')) {
+            deleteCard(e);
+            refreshTaskID();
+        }
+
+        if (e.target.matches('.card-edit') || e.target.matches('.card-edit-icon')) {
+            console.log('edit');
+        }
+
+
+    }, false);
+
+}
+
 export { addList };
 export { addTask };
 export { selectList };
+export { selectCardButtons };
 
 
 // DOM logic functions
@@ -129,7 +149,7 @@ function newTask(list, title, description, dueDate, notes, isComplete) {
     this.description = description;
     this.dueDate = dueDate;
     this.notes = notes;
-    this.isComplete = isComplete
+    this.isComplete = isComplete;
 }
 
 function submitNewTask() {
@@ -221,9 +241,11 @@ function createCard(title, description, dueDate, notes) {
     const deleteIconSVG = new Image();
     deleteIconSVG.src = deleteIcon;
     deleteIconSVG.classList.add('card-button');
+    deleteIconSVG.classList.add('card-delete-icon')
     const editIconSVG = new Image();
     editIconSVG.src = editIcon;
     editIconSVG.classList.add('card-button');
+    editIconSVG.classList.add('card-edit-icon');
     const cardButtons = newDiv('card-deleteOrEdit','');
     const editButton = document.createElement('button');
     editButton.classList.add('card-edit');
@@ -237,4 +259,22 @@ function createCard(title, description, dueDate, notes) {
     card.appendChild(cardContent);
 
     taskArea.append(card);
+}
+
+function deleteCard(e) {
+    // remove card from page
+    let parent = e.target.closest('.card');
+    const listTasks = document.querySelector('.list-tasks');
+    listTasks.removeChild(parent);
+
+    // remove constructor from array
+
+
+}
+
+function refreshTaskID() {
+    for (let i=0; i < taskArray.length; i ++) {
+        const task = taskArray[i];
+        task.IDNumber = i;
+    };
 }
