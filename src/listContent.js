@@ -67,7 +67,6 @@ const selectList = () => {
             const listName = e.target.textContent;
             const listSectionTitle = document.querySelector('.listSectionTitle');
             listSectionTitle.textContent = listName;
-            document.querySelector('.list-tasks').innerHTML = '';
             loadList();
         }
 
@@ -83,6 +82,7 @@ const selectCardButtons = () => {
         if (e.target.matches('.card-delete') || e.target.matches('.card-delete-icon')) {
             deleteCard(e);
             refreshTaskID();
+            loadList();
         }
 
         if (e.target.matches('.card-edit') || e.target.matches('.card-edit-icon')) {
@@ -143,29 +143,32 @@ function submitNewList() {
 };
 
 // create task info constructor
-function newTask(list, title, description, dueDate, notes, isComplete) {
+function newTask(list, title, description, dueDate, notes, isComplete, IDNumber) {
     this.list = list;
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.notes = notes;
     this.isComplete = isComplete;
+    this.IDNumber = IDNumber;
 }
 
 function submitNewTask() {
+    // refresh task IDNumber
+    refreshTaskID();
     // create constructor
     const listName = document.querySelector('.listSectionTitle');
     const taskTitle = document.querySelector('#atm-title');
     const taskDescription = document.querySelector('#atm-descriptionText');
     const taskDueDate = document.querySelector('#atm-dueDate');
     const taskNotes = document.querySelector('#atm-notes');
-    const task = new newTask(listName.textContent, taskTitle.value, taskDescription.value, taskDueDate.value, taskNotes.value, 'no');
+    const task = new newTask(listName.textContent, taskTitle.value, taskDescription.value, taskDueDate.value, taskNotes.value, 'no', taskArray.length);
 
     taskArray.push(task);
     console.log(taskArray);
 
     // create and append html card elements
-    createCard(task.title,task.description,task.dueDate,task.notes);
+    createCard(task.title,task.description,task.dueDate,task.notes,task.IDNumber);
 
     // clear add task modal
     taskTitle.value = taskDescription.value = taskDueDate.value = taskNotes.value = '';
@@ -173,16 +176,14 @@ function submitNewTask() {
 }
 
 function loadList() {
-    // let selectedListTasks = [];
+    document.querySelector('.list-tasks').innerHTML = '';
     const listSectionTitle = document.querySelector('.listSectionTitle').textContent;
     for (let i=0; i < taskArray.length; i++) {
         const arrayItem = taskArray[i];
         if (arrayItem.list === listSectionTitle) {
-            // selectedListTasks.push(arrayItem);
-            createCard(arrayItem.title, arrayItem.description, arrayItem.dueDate, arrayItem.notes);
+            createCard(arrayItem.title, arrayItem.description, arrayItem.dueDate, arrayItem.notes, arrayItem.IDNumber);
         } else continue;
     }
-    // console.log(selectedListTasks);
 }
 
 function newDiv(classname, idname) {
@@ -196,9 +197,9 @@ function newDiv(classname, idname) {
     return element;
 }
 
-function createCard(title, description, dueDate, notes) {
+function createCard(title, description, dueDate, notes, IDNumber) {
     const taskArea = document.querySelector('.list-tasks');
-    const card = newDiv('card','');
+    const card = newDiv('card',`card${IDNumber}`);
     const cardContent = newDiv('card-content','');
 
     const cardTaskTitle = newDiv('card-title','');
@@ -268,12 +269,20 @@ function deleteCard(e) {
     listTasks.removeChild(parent);
 
     // remove constructor from array
-
-
+    for (let i=0; i< taskArray.length; i++) {
+        if (parent.matches(`#card${i}`)) {
+            if (taskArray.length > 1) {
+                taskArray.splice(i,1);
+            } else {
+                taskArray = [];
+            }
+        }
+    }
+    console.log(taskArray)
 }
 
 function refreshTaskID() {
-    for (let i=0; i < taskArray.length; i ++) {
+    for (let i=0; i < taskArray.length; i++) {
         const task = taskArray[i];
         task.IDNumber = i;
     };
