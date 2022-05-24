@@ -87,6 +87,7 @@ const selectCardButtons = () => {
 
         if (e.target.matches('.card-edit') || e.target.matches('.card-edit-icon')) {
             console.log('edit');
+            modalOpenOrClose('#addTaskModal','open');
         }
 
 
@@ -286,4 +287,8 @@ function refreshTaskID() {
         const task = taskArray[i];
         task.IDNumber = i;
     };
+}
+
+function editTask() {
+    // make task modal show selected tasks content
 }
