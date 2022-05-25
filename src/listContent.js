@@ -88,6 +88,13 @@ const selectCardButtons = () => {
         if (e.target.matches('.card-edit') || e.target.matches('.card-edit-icon')) {
             console.log('edit');
             modalOpenOrClose('#addTaskModal','open');
+            disableBackground('on');
+            editTask(e);
+            if (e.target.matches('.atm-submit')) {
+                deleteCard(e);
+                refreshTaskID();
+                loadList();
+            }            
         }
 
 
@@ -95,10 +102,17 @@ const selectCardButtons = () => {
 
 }
 
+const defaultPageOpen = () => {
+    const defaultTask = new newTask('New List','Title','Description','2022-01-01','Notes','no','0');
+    createCard(defaultTask.title,defaultTask.description,defaultTask.dueDate,defaultTask.notes,defaultTask.IDNumber);
+    taskArray.push(defaultTask);
+}
+
 export { addList };
 export { addTask };
 export { selectList };
 export { selectCardButtons };
+export { defaultPageOpen }
 
 
 // DOM logic functions
@@ -289,6 +303,33 @@ function refreshTaskID() {
     };
 }
 
-function editTask() {
+function editTask(e) {
     // make task modal show selected tasks content
+    const parent = e.target.closest('.card');
+    const taskTitle = document.querySelector('#atm-title');
+    const taskDescription = document.querySelector('#atm-descriptionText');
+    const taskDueDate = document.querySelector('#atm-dueDate');
+    const taskNotes = document.querySelector('#atm-notes');
+    for (let i=0; i < taskArray.length; i++) {
+        const task = taskArray[i];
+        if (parent === document.getElementById(`card${i}`)) {
+            taskTitle.value = task.title;
+            taskDescription.value = task.description;
+            taskDueDate.value = task.dueDate;
+            taskNotes.value = task.notes;
+        } else continue;
+    }
+};
+
+function submitTaskEdit(e) {
+    const parent = e.target.closest('.card');
+    for (let i=0; i < taskArray.length; i++) {
+        const task = taskArray[i];
+        if (parent === document.getElementById(`card${i}`)) {
+            task.title = taskTitle.value;
+            task.description = taskDescription.value;
+            task.dueDate = taskDueDate.value;
+            task.notes = taskNotes.value;
+        } else continue;
+    }
 }

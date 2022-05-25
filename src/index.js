@@ -4,6 +4,7 @@ import { addList } from './listContent';
 import { addTask } from './listContent';
 import { selectList } from './listContent';
 import { selectCardButtons } from './listContent';
+import { defaultPageOpen } from './listContent';
 
 function component() {
     const element = document.createElement('div');
@@ -14,7 +15,7 @@ function component() {
 document.body.appendChild(component());
 
 
-
+defaultPageOpen();
 addList();
 addTask();
 selectList();
