@@ -5,6 +5,7 @@ import editIcon from './assets/svgs/editIcon.svg';
 
 
 let taskArray = [];
+let cardToEdit;
 
 // addList function
 const addList = () => {
@@ -47,9 +48,10 @@ const addTask = () => {
             // close modal when cancel button is clicked
             modalOpenOrClose('#addTaskModal','close');
             disableBackground('off');
+            clearAddTaskModal();
         }
 
-        if (e.target.matches('.atm-submit')) {
+        if (e.target.matches('#atm-submit')) {
             submitNewTask();
             disableBackground('off');
         }
@@ -89,13 +91,22 @@ const selectCardButtons = () => {
             console.log('edit');
             modalOpenOrClose('#addTaskModal','open');
             disableBackground('on');
-            editTask(e);
-            if (e.target.matches('.atm-submit')) {
-                deleteCard(e);
-                refreshTaskID();
-                loadList();
-            }            
+            addRemoveAttribute('.atm-submit','atm-submit','remove');
+            addRemoveAttribute('.atm-submit','atm-submitEdit','add');
+            editTask(e);          
         }
+
+        if (e.target.matches('#atm-submitEdit')) {
+            submitTaskEdit(e);
+            refreshTaskID();
+            loadList();
+            console.log(taskArray);
+            addRemoveAttribute('.atm-submit','atm-submitEdit','remove');
+            addRemoveAttribute('.atm-submit','atm-submit','add');
+            modalOpenOrClose('#addTaskModal','close');
+            disableBackground('off');
+            clearAddTaskModal();
+        } 
 
 
     }, false);
@@ -306,6 +317,7 @@ function refreshTaskID() {
 function editTask(e) {
     // make task modal show selected tasks content
     const parent = e.target.closest('.card');
+    cardToEdit = parent;
     const taskTitle = document.querySelector('#atm-title');
     const taskDescription = document.querySelector('#atm-descriptionText');
     const taskDueDate = document.querySelector('#atm-dueDate');
@@ -321,15 +333,38 @@ function editTask(e) {
     }
 };
 
-function submitTaskEdit(e) {
-    const parent = e.target.closest('.card');
+function submitTaskEdit() {
+    console.log(cardToEdit);
+    const taskTitle = document.querySelector('#atm-title');
+    const taskDescription = document.querySelector('#atm-descriptionText');
+    const taskDueDate = document.querySelector('#atm-dueDate');
+    const taskNotes = document.querySelector('#atm-notes');
     for (let i=0; i < taskArray.length; i++) {
         const task = taskArray[i];
-        if (parent === document.getElementById(`card${i}`)) {
+        if (cardToEdit === document.getElementById(`card${i}`)) {
             task.title = taskTitle.value;
             task.description = taskDescription.value;
             task.dueDate = taskDueDate.value;
             task.notes = taskNotes.value;
         } else continue;
     }
+}
+
+// Add or remove ID
+function addRemoveAttribute(selector, attributeID, addOrRemove) {
+    const element = document.querySelector(`${selector}`);
+    if (addOrRemove === 'remove') {
+        element.removeAttribute('id',`${attributeID}`);
+    } else if (addOrRemove === 'add') {
+        element.setAttribute('id',`${attributeID}`);
+    } else return
+}
+
+// clear add task modal
+function clearAddTaskModal() {
+    const taskTitle = document.querySelector('#atm-title');
+    const taskDescription = document.querySelector('#atm-descriptionText');
+    const taskDueDate = document.querySelector('#atm-dueDate');
+    const taskNotes = document.querySelector('#atm-notes');
+    taskTitle.value = taskDescription.value = taskDueDate.value = taskNotes.value = '';
 }
