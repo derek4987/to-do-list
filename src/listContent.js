@@ -159,6 +159,7 @@ function submitNewList() {
     } else {
         const element = document.createElement('li');
         const button = document.createElement('button');
+        // modify to add delete button
         button.classList.add('li-button');
         button.textContent = listValue.value;
         element.appendChild(button);

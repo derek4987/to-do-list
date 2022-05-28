@@ -99,6 +99,17 @@ button {
   background-color: rgb(173, 173, 236);
 }
 
+/* .lists {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-delete-button {
+  background-color: rgb(139,139,241);
+  color: rgb(139,139,241);
+} */
+
 /* list Content Section */
 #listContentSection {
   grid-row: 2 / 3;
