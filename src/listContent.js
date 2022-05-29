@@ -231,6 +231,7 @@ function createCard(title, description, dueDate, notes, IDNumber) {
 
     const cardTaskTitle = newDiv('card-title','');
     cardTaskTitle.classList.add('card-sectionLabel');
+    cardTaskTitle.classList.add('card-sectionContent');
     cardTaskTitle.textContent = title;
 
     const cardTaskDescription = newDiv('card-description','');
@@ -238,6 +239,7 @@ function createCard(title, description, dueDate, notes, IDNumber) {
     descriptionSpan.classList.add('card-sectionLabel');
     descriptionSpan.textContent = 'Description: ';
     const descriptionText = document.createElement('span');
+    descriptionText.classList.add('card-sectionContent');
     descriptionText.textContent = description;
     cardTaskDescription.append(descriptionSpan, descriptionText);
 
@@ -246,6 +248,7 @@ function createCard(title, description, dueDate, notes, IDNumber) {
     dueDateSpan.classList.add('card-sectionLabel');
     dueDateSpan.textContent = 'Due Date: ';
     const dueDateText = document.createElement('span');
+    dueDateText.classList.add('card-sectionContent');
     dueDateText.textContent = dueDate;
     cardTaskDueDate.append(dueDateSpan,dueDateText);
 
@@ -254,6 +257,7 @@ function createCard(title, description, dueDate, notes, IDNumber) {
     notesSpan.classList.add('card-sectionLabel');
     notesSpan.textContent = 'Notes: ';
     const notesText = document.createElement('span');
+    notesText.classList.add('card-sectionContent');
     notesText.textContent = notes;
     cardTaskNotes.append(notesSpan,notesText);
 

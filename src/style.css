@@ -157,6 +157,11 @@ button {
   font-weight: 600;
 }
 
+.card-sectionContent {
+  max-width: 320px;
+  overflow-wrap: break-word;
+}
+
 .card-deleteOrEdit {
   display: flex;
   gap: 20px;
