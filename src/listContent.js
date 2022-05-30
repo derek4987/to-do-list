@@ -54,6 +54,7 @@ const addTask = () => {
         if (e.target.matches('#atm-submit')) {
             submitNewTask();
             disableBackground('off');
+            isChecked();
         }
 
     }, false);
@@ -70,6 +71,7 @@ const selectList = () => {
             const listSectionTitle = document.querySelector('.listSectionTitle');
             listSectionTitle.textContent = listName;
             loadList();
+            isChecked();
         }
 
     }, false);
@@ -85,6 +87,7 @@ const selectCardButtons = () => {
             deleteCard(e);
             refreshTaskID();
             loadList();
+            isChecked();
         }
 
         if (e.target.matches('.card-edit') || e.target.matches('.card-edit-icon')) {
@@ -100,13 +103,18 @@ const selectCardButtons = () => {
             submitTaskEdit(e);
             refreshTaskID();
             loadList();
+            isChecked();
             console.log(taskArray);
             addRemoveAttribute('.atm-submit','atm-submitEdit','remove');
             addRemoveAttribute('.atm-submit','atm-submit','add');
             modalOpenOrClose('#addTaskModal','close');
             disableBackground('off');
             clearAddTaskModal();
-        } 
+        }
+        
+        if (e.target.matches('.task-complete')) {
+            markAsComplete(e);
+        }
 
 
     }, false);
@@ -268,6 +276,7 @@ function createCard(title, description, dueDate, notes, IDNumber) {
     const checkboxInput = document.createElement('input');
     checkboxInput.classList.add('task-complete');
     checkboxInput.setAttribute('type','checkbox');
+    checkboxInput.setAttribute('id',`checkbox${IDNumber}`);
     cardTaskCheckbox.append(checkboxSpan, checkboxInput);
 
     const deleteIconSVG = new Image();
@@ -372,4 +381,35 @@ function clearAddTaskModal() {
     const taskDueDate = document.querySelector('#atm-dueDate');
     const taskNotes = document.querySelector('#atm-notes');
     taskTitle.value = taskDescription.value = taskDueDate.value = taskNotes.value = '';
+}
+
+// change isComplete status in constructor
+function markAsComplete(e) {
+    const parent = e.target.closest('.card');
+    for (let i=0; i < taskArray.length; i++) {
+        const task = taskArray[i];
+        if (parent === document.getElementById(`card${i}`)) {
+            if (task.isComplete === 'no') {
+                task.isComplete = 'yes';
+                console.log(task);
+            } else {
+                task.isComplete = 'no';
+                console.log(task);
+            };
+        } else continue;
+    }
+}
+
+// checkbox checked if taskArray isComplete value is 'yes'
+function isChecked() {    
+    const listSectionTitle = document.querySelector('.listSectionTitle').textContent;
+    for (let i=0; i < taskArray.length; i++) {
+        const isTaskComplete = document.querySelector(`#checkbox${i}`);
+        const arrayItem = taskArray[i];
+        if (arrayItem.isComplete === 'no' && arrayItem.list === listSectionTitle) {
+            isTaskComplete.checked = false;
+        } else if (arrayItem.isComplete === 'yes' && arrayItem.list === listSectionTitle) {
+            isTaskComplete.checked = true;
+        } else continue;  
+    }
 }
