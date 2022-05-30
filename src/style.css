@@ -93,6 +93,10 @@ button {
   border: none;
   text-align: start;
   padding-left: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 20px;
 }
 
 .li-button:hover {

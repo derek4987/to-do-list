@@ -1,5 +1,6 @@
 // add list and task modules and page controllers
 
+import _ from 'lodash';
 import deleteIcon from './assets/svgs/deleteIcon.svg';
 import editIcon from './assets/svgs/editIcon.svg'; 
 
@@ -16,6 +17,7 @@ const addList = () => {
             // open modal when 'add list' button is clicked
             modalOpenOrClose('#addListModal','open');
             disableBackground('on');
+            enableAddTaskButton();
         }
 
         if (e.target.matches('.alm-cancel')) {
@@ -72,6 +74,12 @@ const selectList = () => {
             listSectionTitle.textContent = listName;
             loadList();
             isChecked();
+            enableAddTaskButton();
+        }
+
+        if (e.target.matches('.list-delete-icon')) {
+            deleteList(e);
+            disableAddTaskButton();
         }
 
     }, false);
@@ -167,9 +175,17 @@ function submitNewList() {
     } else {
         const element = document.createElement('li');
         const button = document.createElement('button');
-        // modify to add delete button
+
+        const listSpan = document.createElement('span');
+        const listDeleteIcon = new Image();
+        listDeleteIcon.src = deleteIcon;
+        listDeleteIcon.classList.add('card-button');
+        listDeleteIcon.classList.add('list-delete-icon')
+        listSpan.appendChild(listDeleteIcon);
+
         button.classList.add('li-button');
         button.textContent = listValue.value;
+        button.appendChild(listSpan);
         element.appendChild(button);
         listSection.appendChild(element);
         listValue.value = ''; 
@@ -412,4 +428,43 @@ function isChecked() {
             isTaskComplete.checked = true;
         } else continue;  
     }
+}
+
+// delete list
+function deleteList(e) {
+    const parent = e.target.closest('.li-button');
+    const listName = parent.textContent;
+
+    // remove list from DOM
+    const listItem = parent.parentElement;
+    const listSection = document.querySelector('#sbListsSection');
+    listSection.removeChild(listItem);
+
+    //remove associated list tasks from DOM
+    const listTasks = document.querySelector('.list-tasks');
+    listTasks.innerHTML = '';
+
+    // remove deleted lists Title from task area
+    const listSectionTitle = document.querySelector('.listSectionTitle');
+    listSectionTitle.textContent = '';
+
+    // remove deleted list tasks from constructor array
+    
+    for (let i=0; i < taskArray.length; i++) {
+        const task = taskArray[i];
+        if (task.list === listName) {
+            taskArray.splice(i,1);
+        } else continue;
+        console.log(taskArray);
+    }
+}
+
+// function to disable Add Task button
+function disableAddTaskButton() {
+    document.getElementById('addTaskButton').disabled = true;
+}
+
+// function to un-disable Add Task button
+function enableAddTaskButton() {
+    document.getElementById('addTaskButton').disabled = false;
 }
