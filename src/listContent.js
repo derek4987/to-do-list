@@ -79,6 +79,7 @@ const selectList = () => {
 
         if (e.target.matches('.list-delete-icon')) {
             deleteList(e);
+            refreshTaskID();
             disableAddTaskButton();
         }
 
@@ -173,6 +174,11 @@ function submitNewList() {
     if (listValue.value === '') {
         return 
     } else {
+        // to open new list after pressing submit
+        document.querySelector('.list-tasks').innerHTML = '';
+        const listSectionTitle = document.querySelector('.listSectionTitle');
+        listSectionTitle.textContent = listValue.value;
+
         const element = document.createElement('li');
         const button = document.createElement('button');
 
@@ -449,14 +455,16 @@ function deleteList(e) {
     listSectionTitle.textContent = '';
 
     // remove deleted list tasks from constructor array
-    
+    let tempArray = [];
     for (let i=0; i < taskArray.length; i++) {
         const task = taskArray[i];
-        if (task.list === listName) {
-            taskArray.splice(i,1);
+        if (task.list !== listName) {
+            tempArray.push(task);
+            console.log(`tempArray = ${tempArray}`);
         } else continue;
-        console.log(taskArray);
     }
+    taskArray = tempArray;
+    console.log(taskArray);
 }
 
 // function to disable Add Task button
