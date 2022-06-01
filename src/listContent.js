@@ -4,9 +4,10 @@ import _ from 'lodash';
 import deleteIcon from './assets/svgs/deleteIcon.svg';
 import editIcon from './assets/svgs/editIcon.svg'; 
 
-
+const selectedListTitle = document.querySelector('.listSectionTitle');
 let taskArray = [];
-let listArray = ['New List'];
+let listArray = [];
+let selectedList = 'New List';
 let cardToEdit;
 
 // addList function
@@ -29,8 +30,11 @@ const addList = () => {
 
         if (e.target.matches('.alm-submit')) {
             let listValue = document.querySelector('#listName').value;
+            selectedListTitle.textContent = listValue;
             submitNewList(listValue);
             disableBackground('off');
+            selectedList = selectedListTitle.textContent;
+            save();
         }
 
     }, false);
@@ -59,6 +63,7 @@ const addTask = () => {
             submitNewTask();
             disableBackground('off');
             isChecked();
+            save();
         }
 
     }, false);
@@ -77,12 +82,16 @@ const selectList = () => {
             loadList();
             isChecked();
             enableAddTaskButton();
+            selectedList = selectedListTitle.textContent;
+            save();
         }
 
         if (e.target.matches('.list-delete-icon')) {
             deleteList(e);
             refreshTaskID();
             disableAddTaskButton();
+            selectedList = selectedListTitle.textContent;
+            save();
         }
 
     }, false);
@@ -99,6 +108,7 @@ const selectCardButtons = () => {
             refreshTaskID();
             loadList();
             isChecked();
+            save();
         }
 
         if (e.target.matches('.card-edit') || e.target.matches('.card-edit-icon')) {
@@ -121,10 +131,12 @@ const selectCardButtons = () => {
             modalOpenOrClose('#addTaskModal','close');
             disableBackground('off');
             clearAddTaskModal();
+            save();
         }
         
         if (e.target.matches('.task-complete')) {
             markAsComplete(e);
+            save();
         }
 
 
@@ -133,16 +145,24 @@ const selectCardButtons = () => {
 }
 
 const defaultPageOpen = () => {
+    // load default list
+    const listValue = document.querySelector('#listName');
+    listValue.value = 'New List';
+    submitNewList('New List');
+
+    // load default task
     const defaultTask = new newTask('New List','Title','Description','2022-01-01','Notes','no','0');
     createCard(defaultTask.title,defaultTask.description,defaultTask.dueDate,defaultTask.notes,defaultTask.IDNumber);
     taskArray.push(defaultTask);
+
+    save();
 }
 
 export { addList };
 export { addTask };
 export { selectList };
 export { selectCardButtons };
-export { defaultPageOpen }
+export { view }
 
 
 // DOM logic functions
@@ -178,8 +198,8 @@ function submitNewList(listName) {
     } else {
         // to open new list after pressing submit
         document.querySelector('.list-tasks').innerHTML = '';
-        const listSectionTitle = document.querySelector('.listSectionTitle');
-        listSectionTitle.textContent = listValue.value;
+        // const listSectionTitle = document.querySelector('.listSectionTitle');
+        // listSectionTitle.textContent = listValue.value;
 
         const element = document.createElement('li');
         const button = document.createElement('button');
@@ -492,7 +512,56 @@ function enableAddTaskButton() {
     document.getElementById('addTaskButton').disabled = false;
 }
 
-// save data to local storage
+// function to save data to local storage
 function save() {
+    // get updated list and task array data
+    let newListData = listArray;
+    let newTaskData = taskArray;
+    let currentListOpened = selectedList;
 
+    // save data to local storage
+    localStorage.setItem('listData', JSON.stringify(newListData));
+    localStorage.setItem('taskData', JSON.stringify(newTaskData));
+    localStorage.setItem('listOpened', JSON.stringify(currentListOpened));
+}
+
+// function to view saved data after refresh
+const view = () => {
+    // retrieve stored data
+    let storedListData = JSON.parse(localStorage.getItem('listData'));
+    let storedTaskData = JSON.parse(localStorage.getItem('taskData'));
+    let storedListOpened = JSON.parse(localStorage.getItem('listOpened'));
+
+    if (storedListData === null && storedTaskData === null && storedListOpened === null) {
+        defaultPageOpen();
+        return;
+    } else {
+        // set stored data as listArray and taskArray value
+        // listArray = storedListData;
+        taskArray = storedTaskData;
+        selectedList = storedListOpened;
+        console.log([storedListOpened, listArray, taskArray]);
+
+        // display stored data on the DOM
+        selectedListTitle.textContent = selectedList;
+        
+        // display lists on DOM
+        for (let i=0; i < storedListData.length; i++) {
+            const listValue = document.querySelector('#listName');
+            const list = storedListData[i];
+            listValue.value = list
+            submitNewList(list);
+        }
+        console.log(listArray);
+
+        // display tasks on DOM
+        document.querySelector('.list-tasks').innerHTML = '';
+        for (let i=0; i < taskArray.length; i++) {
+            const task = taskArray[i];
+            if (task.list === selectedList) {
+                createCard(task.title,task.description,task.dueDate,task.notes,task.IDNumber);    
+            } else continue;
+        }
+        console.log(taskArray);
+    } 
 }
