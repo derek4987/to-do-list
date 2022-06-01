@@ -24,17 +24,29 @@ const addList = () => {
 
         if (e.target.matches('.alm-cancel')) {
             // close modal when cancel button is clicked
+            document.querySelector('#listName').value = '';
             modalOpenOrClose('#addListModal','close');
             disableBackground('off');
         }
 
         if (e.target.matches('.alm-submit')) {
-            let listValue = document.querySelector('#listName').value;
-            selectedListTitle.textContent = listValue;
-            submitNewList(listValue);
-            disableBackground('off');
-            selectedList = selectedListTitle.textContent;
-            save();
+            const listValue = document.querySelector('#listName');
+            // no repeat list name
+            for (let i=0; i < listArray.length; i++) {
+                const list = listArray[i];
+                if (listValue.value === list) {
+                    alert('You already have a list with that title');
+                    listValue.value = '';
+                    break
+                } else continue;
+            }
+            if (listValue.value !== '') {
+                selectedListTitle.textContent = listValue.value;
+                submitNewList(listValue.value);
+                disableBackground('off');
+                selectedList = selectedListTitle.textContent;
+                save();   
+            } else return;            
         }
 
     }, false);
@@ -559,9 +571,10 @@ const view = () => {
         for (let i=0; i < taskArray.length; i++) {
             const task = taskArray[i];
             if (task.list === selectedList) {
-                createCard(task.title,task.description,task.dueDate,task.notes,task.IDNumber);    
+                createCard(task.title,task.description,task.dueDate,task.notes,task.IDNumber);   
             } else continue;
         }
+        isChecked();
         console.log(taskArray);
     } 
 }
