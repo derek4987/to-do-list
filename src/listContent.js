@@ -6,6 +6,7 @@ import editIcon from './assets/svgs/editIcon.svg';
 
 
 let taskArray = [];
+let listArray = ['New List'];
 let cardToEdit;
 
 // addList function
@@ -27,7 +28,8 @@ const addList = () => {
         }
 
         if (e.target.matches('.alm-submit')) {
-            submitNewList();
+            let listValue = document.querySelector('#listName').value;
+            submitNewList(listValue);
             disableBackground('off');
         }
 
@@ -167,7 +169,7 @@ function disableBackground(onOrOff) {
     } else return;
 }
 
-function submitNewList() {
+function submitNewList(listName) {
     const listValue = document.querySelector('#listName');
     const listSection = document.querySelector('#sbListsSection');
 
@@ -190,7 +192,9 @@ function submitNewList() {
         listSpan.appendChild(listDeleteIcon);
 
         button.classList.add('li-button');
-        button.textContent = listValue.value;
+        button.textContent = listName;
+        listArray.push(listName);
+        console.log(listArray);
         button.appendChild(listSpan);
         element.appendChild(button);
         listSection.appendChild(element);
@@ -465,6 +469,17 @@ function deleteList(e) {
     }
     taskArray = tempArray;
     console.log(taskArray);
+
+    // remove deleted list from listArray
+    let tempListArray = [];
+    for (let i=0; i < listArray.length; i++) {
+        const list = listArray[i];
+        if (list !== listName) {
+            tempListArray.push(list);
+        } else continue;
+    }
+    listArray = tempListArray;
+    console.log(listArray);
 }
 
 // function to disable Add Task button
@@ -475,4 +490,9 @@ function disableAddTaskButton() {
 // function to un-disable Add Task button
 function enableAddTaskButton() {
     document.getElementById('addTaskButton').disabled = false;
+}
+
+// save data to local storage
+function save() {
+
 }
